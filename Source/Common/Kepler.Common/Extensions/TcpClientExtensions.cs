@@ -19,6 +19,15 @@
             return BitConverter.ToInt32(buffer, 0);
         }
 
+        public static int ReadUnsignedMedium(this TcpClient tcpClient)
+        {
+            var buffer = new byte[3];
+
+            Read(tcpClient, buffer, true);
+
+            return ToUnsignedInt24(buffer);
+        }
+
         public static void Write<T>(this TcpClient tcpClient, T value)
             where T : struct
         {
@@ -60,6 +69,11 @@
                     Array.Reverse(buffer);
                 }
             }
+        }
+
+        private static int ToUnsignedInt24(byte[] buffer)
+        {
+            return buffer[0] | buffer[1] << 8 | buffer[2] << 16;
         }
     }
 }

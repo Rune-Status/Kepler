@@ -6,6 +6,7 @@
 
     using Kepler.Network.Login;
     using Kepler.Network.Login.Handshake;
+    using Kepler.Network.Login.LoginState;
     using Kepler.Network.Login.OnDemand;
     using Kepler.Network.Login.UpdateStatus;
     using Kepler.Network.Login.VersionValidation;
@@ -14,7 +15,9 @@
 
     public class DependencyInstaller : IWindsorInstaller
     {
-        private const string HandshakeDecoder = "Handshake Decoder";
+        private const string HandshakeDecoder = "HandshakeDecoder";
+
+        private const string LoginStateDecoder = "LoginStateDecoder";
 
         private const string OnDemandDecoder = "OnDemandDecoder";
 
@@ -45,7 +48,12 @@
 
             container.Register(
                 Component.For<IByteMessageDecoder>().ImplementedBy<OnDemandDecoder>().LifestyleTransient()
+                    .DependsOn(Dependency.OnComponent(typeof(IByteMessageDecoder), LoginStateDecoder))
                     .Named(OnDemandDecoder));
+
+            container.Register(
+                Component.For<IByteMessageDecoder>().ImplementedBy<LoginStateDecoder>().LifestyleTransient()
+                    .Named(LoginStateDecoder));
         }
 
         private void RegisterSimpleSingleDependency<TInterface, TClass>(IWindsorContainer container)
