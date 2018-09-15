@@ -20,10 +20,20 @@
         }
 
         public static void Write<T>(this TcpClient tcpClient, T value)
+            where T : struct
         {
             Type type = typeof(T);
 
             byte[] buffer;
+
+            if (type == typeof(byte))
+            {
+                var writeValue = value as byte?;
+
+                tcpClient.GetStream().WriteByte(writeValue ?? throw new ArgumentNullException());
+
+                return;
+            }
 
             if (type == typeof(int))
             {
