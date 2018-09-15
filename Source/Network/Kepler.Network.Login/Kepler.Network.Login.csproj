@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Kepler.Common\Kepler.Common.csproj" />
+    <ProjectReference Include="..\Kepler.Network\Kepler.Network.csproj" />
+  </ItemGroup>
+
+</Project>
