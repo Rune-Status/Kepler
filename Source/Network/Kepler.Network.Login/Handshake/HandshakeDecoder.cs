@@ -19,9 +19,9 @@
         {
             int handshakeTypeValue = tcpClient.ReadByte();
 
-            try
+            if (Enum.TryParse(handshakeTypeValue.ToString(), out HandshakeType result))
             {
-                switch (Enum.Parse(typeof(HandshakeType), handshakeTypeValue.ToString()))
+                switch (result)
                 {
                     case HandshakeType.Login:
                         throw new NotImplementedException();
@@ -30,7 +30,7 @@
                         break;
                 }
             }
-            catch (ArgumentException)
+            else
             {
                 Console.WriteLine("Invalid handshake opcode received. Closing connection.");
                 tcpClient.Close();
